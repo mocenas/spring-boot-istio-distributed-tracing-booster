@@ -59,6 +59,8 @@ public class OpenshiftIT {
                 .param("start", startTime)
                 .get("/api/traces");
 
+        System.out.println(response.asString());
+
         assertThat(response.statusCode()).isEqualTo(200);
 
         final JsonPath jsonPath = response.jsonPath();

@@ -1,22 +1,23 @@
 package me.snowdrop.istio.dt;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import java.net.URL;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 import org.arquillian.cube.istio.api.IstioResource;
 import org.arquillian.cube.openshift.impl.enricher.RouteURL;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.net.URL;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @RunWith(Arquillian.class)
 @IstioResource("classpath:greeting-gateway.yml")
@@ -110,13 +111,14 @@ public class OpenshiftIT {
             .pollInterval(1, TimeUnit.SECONDS)
             .atMost(1, TimeUnit.MINUTES)
                 .untilAsserted(() ->
-                        RestAssured
-                                .given()
-                                .baseUri(ingressGatewayURL.toString())
-                                .when()
-                                .get("/greeting/")
-                                .then()
-                                .statusCode(200)
+                        {
+                            Response response = RestAssured
+                                    .given()
+                                    .baseUri(ingressGatewayURL.toString())
+                                    .when()
+                                    .get("/greeting/");
+                            assertThat(response.statusCode()).isEqualTo(200).withFailMessage("Status: " + response.statusCode() + " " + response.asString());
+                        }
                 );
     }
 

@@ -61,7 +61,7 @@ public class OpenshiftIT {
 
         System.out.println(response.asString());
 
-        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(response.statusCode()).isEqualTo(200).withFailMessage("Status: " + response.statusCode() + " " + response.asString());
 
         final JsonPath jsonPath = response.jsonPath();
 

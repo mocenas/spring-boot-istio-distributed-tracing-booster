@@ -117,6 +117,8 @@ public class OpenshiftIT {
                                     .baseUri(ingressGatewayURL.toString())
                                     .when()
                                     .get("/greeting/");
+                            System.out.println("status: " + response.statusCode());
+                            System.out.println("response: " + response.asString());
                             assertThat(response.statusCode()).isEqualTo(200).withFailMessage("Status: " + response.statusCode() + " " + response.asString());
                         }
                 );
